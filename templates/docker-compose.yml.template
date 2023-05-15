@@ -1,0 +1,26 @@
+version: "3"
+services:
+  nginx:
+    container_name: $name
+    restart: always
+    build: .
+    volumes:
+      - ./templates/nginx_templates:/etc/nginx/templates
+      - ./sites-available/:/etc/nginx/sites-available
+      - ./sites-enabled/:/etc/nginx/sites-enabled
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - letsencrypt:/etc/letsencrypt
+    ports:
+      - $port:$port
+      - 443:443
+    env_file:
+      - .env
+    #entrypoint: ["certbot', 'renew', '--dry-run"]
+    healthcheck:
+      test: curl --fail https://$domain || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+
+volumes:
+  letsencrypt:

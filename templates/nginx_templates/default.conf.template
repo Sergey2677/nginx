@@ -1,0 +1,14 @@
+server {
+    listen       ${NGINX_PORT};
+    server_name  ${NGINX_HOST};
+
+    error_log /var/log/nginx/${NGINX_LOG_NAME}.error.log;
+    access_log /var/log/nginx/${NGINX_LOG_NAME}.access.log;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+}
+
